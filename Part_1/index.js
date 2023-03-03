@@ -33,7 +33,8 @@
             name : 'Ravi'
         }
 
-    // 2. PRIMITIVE [EVERYTHING ELSE]
+    // 2. PRIMITIVE [EVERYTHING ELSE] : 
+
         // (i) Number: Floating point numbers => Used for decimals and integers
             let age = 23;
 
@@ -52,8 +53,35 @@
 
         // (vii) BigInt (ES2020): Larger integers than the Number type can hold
 
-        // IMP : JavaScript has dynamic typing: We do not have to manually de ne the data type of
-        //       the value stored in a variable. Instead, data types are determined automatically.
+        /* IMP : JavaScript has dynamic typing: We do not have to manually define the data type of
+               the value stored in a variable. Instead, data types are determined automatically. 
+
+               1. All primitives are immutable; that is, they cannot be altered
+
+                    Example : 
+
+                        // Declare Variable 
+                        let person = 'Ravi'
+
+                        // Try to change value 
+                        person[0] = 'A' 
+
+                        // And log it, there is no change!
+                        console.log(person) // output: Ravi
+
+                 2. All non-primitives are mutable; that is, they be altered
+
+                        // Declare Array
+                        let peopleList = ['Arnold', 'Linda', 'Sylvester', 'Dolph']
+
+                        // Try to change value
+                        peopleList[0] = 'Jean-Claude'
+
+                        // And log it, there is change!
+                        console.log(peopleList)
+
+
+        */
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
