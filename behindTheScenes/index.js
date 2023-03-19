@@ -222,26 +222,177 @@
 
     /*  By supposing that our code was just finished compiling.
         So the code is now ready to be executed.
-        In this First global execution context is created FOR THE TOP-LEVEL CODE.
-
-            1. What is  Top-level ?
-            => is basically code that is not inside any function.
-
-        Functions should only be executed when they are called.
+        
+        The browser's JavaScript engine then creates a special environment 
+        to handle the transformation and execution of this JavaScript code.
+        This environment is known as the Execution Context.
+        
+        The Execution Context contains the code that's currently running,
+        and everything that aids in its execution.
+        
+        Execution Context is like big container which includes 2 components :
+            1. Memory : also known as variable environment, 
+                        in which everything is stored as key value pairs.
+            2. Code : also know as thread of execution,
+                      In which the code is executed one line at a time.
+            
+        Type Of Execution Context : 
+            1. Global Execution Context : 
+                In this First global execution context is created FOR THE TOP-LEVEL CODE.
+        
+                    1. What is  Top-level ?
+                    => is basically code that is not inside any function.
+                    
+                    # Now, in any JavaScript project, no matter how large it is,
+                        There is only ever one global execution context.
+                        It's always there as the default context,
+                        And it's where top-level code will execute.
+                    
+            2. Function Execution Context : 
+            
+                After creation of global context top level code executed there.
+                And after the top level code finished FUNCTIONS finally start to execute as well.
+                For each and every function call execution context will be created.
+                
+                Functions should only be executed when they are called.
+                And At the Same time new execution context was created for each function.
+                
+                        
+        The creation of an Execution Context (GEC or FEC) happens in two phases :
+            1. Creation Phase
+            2. Execution Phase
+            
+        # Code example to understand Execution Context Phases #
+                        
+            var n = 2;
+        
+            function square(num) {
+                var ans = num * num;
+                return ans;
+            }
+        
+            var square2 = square(n);
+            var square4 = square(4);
+            
+        (i) Creation Phase : Allocate memory for all variables and functions.
+        
+            => As soon as EC [Execution Context] encounters line from above code 
+                it allocates memory to "n" in memory component or we can say variable environment.
+                
+                Something like :
+                    n: undefined
+                    
+            => Then after there function with name "square".
+                so now it allocates memory for function with name "square".
+                
+                Something like :
+                    square : {
+                        var ans = num * num;
+                        return ans;
+                    }
+                
+                here you it stored hole function code inside memory instead of 'undefined' 
+                as we seen in variable with name "n".
+                
+                
+            => Same goes for others 
+                and so now memory components like something like below:
+                    
+                    n : undefined
+                    square : {
+                        var ans = num * num;
+                        return ans;
+                    }
+                    square2 : undefined
+                    square4 : undefined
+                    
+        (ii) Execution Phase : In this phase everything happen in code components or thread of execution.
+        
+        => So now once once again EC [Execution Context] goes through top to bottom line by line. 
+        
+        => Here we first have 
+                var n = 2;
+                
+            So now in memory component value of "n" will be changed to 2.
+                    n : 2
+                    
+        => now it goes to next line and there function so there nothing to execute or we can nothing to do.
+        
+        => then it goes to next line there is variable with name "square2".
+            here the function "square" is called 
+            
+            And when ever function is called THE BRAND NEW EXECUTION CONTEXT WAS CREATED in side code component.
+            
+        => This new execution context again have two components MEMORY and CODE Components.
+            and with that there also 2 phase memory creation and execution phase.
+            
+        => In Function Execution Context [FEC] Memory creation phase allocate memory to parameters, variables and functions.
+        
+        => So here in the "square" function there is "num" and "ans" corresponding to parameter and variable.
+        
+        => That's why in memory component it is stored as :
+                    num : undefined
+                    ans : undefined
+                    
+        => and now code is executed in code component so parameter "num"
+            will receive the value as 2 because "square" function pass value as n and 
+            also invoke at variable "square2" 
+            
+        => So no in the memory component value of "num" is chang :
+                    n : 2
+                    
+        => after that in code component 
+                    var ans = num * num ;
+            is going to execute and it will change value of "ans"
+                    ans : 4
+                    
+        => Now goes to next line there special keyword return
+                    return ans;
+            which means it is goes to origin of the function where it is invoked means come to line 
+                    var square2 = square(n);
+                    
+        => Every time function comes to in "return" stage it goes after there parent execution context.
+            And the most important thing is that execution context which is created by the function after
+            returning the function it will DESTROY.
+            In over example it is come back to global execution context.
+            
+        => So we are in parent execution context of execution context which is created by "square" function called.
+        
+        => Here now value of "square2" is changed to 4
+                    square2 : 4;    
+                    
+        => THIS SAME PROCESS WILL HAPPEN FOR VARIABLE "square4" VARIABLE.
+        
+        => AS SOON AS "square4" VARIABLE ASSIGNED VALUE THE GEC ALSO GOT DESTROY.
+        
+        
+        ##### CALL STACK #####
+        
+        => Call stack is nothing but a stack which manages the execution context.
+        
+        => When ever the any JS Code is executed the hole Call stack is populated 
+            with GEC.
+            
+        => When ever the function is executed the new execution context was created 
+            and it will goes inside the call stack.
+            
+            * In over example let suppose you have E1 execution context which created
+                by "square2" variable so goes to into the call stack and places above GEC.
+                and when this function is going return E1 execution context pop from the call stack.
+                
+                    |     |                                    |     |               
+                    |     |                                    |     |            
+                    | E1  | => Call stack                      |     | => Call stack 
+                    |_____|    When "Square2"                  |_____|    When "Square2"
+                    | GEC |    function called                 | GEC |    function returned.
+                    |_____|                                    |_____|
+            
+        => SAME GOES FOR "square4" VARIABLE.
+        
+        => Call stack only for manage Execution Context and it is going to be empty when hole code 
+        was completely executed.
     */
 
-    /*  Execution Context : Environment in which a piece of JavaScript is executed.
-                            Stored all the necessary info for some code to be executed.
-
-        => Now, in any JavaScript project, no matter how large it is,
-           There is only ever one global execution context.
-           It's always there as the default context,
-           And it's where top-level code will execute.
-    */
-
-    // After creation of global context top level code executed there.
-    // And after the top level code finished FUNCTIONS finally start to execute as well.
-    // For each and every function call execution context will be created.
 
 
 
