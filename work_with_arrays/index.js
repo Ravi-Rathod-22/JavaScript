@@ -157,7 +157,7 @@ const displayMovements = function (movements) {
     const html = `
         <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type.toLocaleUpperCase()}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
         </div>
     `
 
@@ -207,3 +207,74 @@ const createUsernames = function (accs) {
 createUsernames(accounts);
 
 console.log(accounts);
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// The filter Method
+
+const deposit = movements.filter(movement => movement > 0)
+console.log('deposit',deposit);
+
+const depositFor = [];
+for (const movement of movements) {
+  if (movement > 0) {
+    depositFor.push(movement);
+  }
+}
+
+console.log(depositFor);
+
+const withdrawals = movements.filter(movement => movement < 0)
+console.log(withdrawals);
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// The reduce Method 
+
+const balance = movements.reduce((acc,mov, i, arr) =>{
+  return acc + mov;
+}, 0);
+
+console.log(balance);
+
+let balance2 = 0;
+for (const mov of movements) {
+  balance2 += mov;
+}
+
+console.log(balance2);
+
+
+
+const calcDisplayBalance =  (movements) => {
+  const balance = movements.reduce((acc, mov) => acc+mov, 0);
+  labelBalance.textContent = `${balance} EUR`;
+}
+
+calcDisplayBalance(account1.movements);
+
+
+/* Maximum Value */
+
+const max = movements.reduce((acc,mov) => acc > mov ? acc : mov, movements[0]);
+
+console.log('max', max);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// The Magic of Chaining Methods
+
+const calcDisplaySummary = function(movements) {
+  const incomes = movements.filter(mov => mov > 0).reduce((acc, mov, i, arr) => acc+mov, 0);
+
+  const outcomes = movements.filter(mov => mov < 0).reduce((acc, mov, i, arr) => acc+mov, 0);
+
+  const interest = movements.filter(mov => mov > 0).map((mov) => mov * 0.2).reduce((acc, mov, i, arr) => acc+mov, 0);
+
+  labelSumIn.textContent = `${incomes}€`;
+  labelSumOut.textContent = `${Math.abs(outcomes)}€`; 
+  labelSumInterest.textContent = `${interest}€`
+}
+
+calcDisplaySummary(account1.movements);
