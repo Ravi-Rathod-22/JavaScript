@@ -452,3 +452,72 @@
 
                         
         */
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+// Hoisting and TDZ in Practice
+
+/* 
+    // Code 1 : 
+        // var x = 7;
+
+        // function getName() {
+        //     console.log('Ravi Rathod');
+        // }
+
+        // getName();  
+        // console.log(x);
+
+
+    // Code 2 : 
+        getName();  
+        console.log(x);         
+
+        var x = 7;
+
+        function getName() {
+            console.log('Ravi Rathod');
+        }
+
+    # Show difference in Code 1 and Code 2
+
+    Code 1 : function and variable accessed after initialization
+    Code 2 : function and variable accessed before initialization
+
+    In code 2 function got executed and variable value got undefined 
+
+    This happens because of HOISTING.
+
+    HOISTING : is phenomena in js by which you access variable and function even before initialize
+                you can access it without any error 
+
+
+    // Code 3 : 
+        
+        var x = 7;
+        
+        function getName() {
+            console.log('Ravi Rathod');
+        }
+
+        console.log(getName);
+
+    // Code 4 : 
+        
+        console.log(getName);
+
+        var x = 7;
+        
+        function getName() {
+            console.log('Ravi Rathod');
+        }
+
+    # NOW :
+        - In Code 3 and Code 4 We Can see same result because we 
+
+*/
