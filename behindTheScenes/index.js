@@ -462,6 +462,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // Hoisting and TDZ in Practice
 
+    // Hoisting 
+
 /* 
     // Code 1 : 
         // var x = 7;
@@ -505,10 +507,15 @@
             console.log('Ravi Rathod');
         }
 
+        getName();
+        console.log(x);
         console.log(getName);
+
 
     // Code 4 : 
         
+        getName();                                      <--------------- PUT DEBUGGER IN CONSOLE TO UNDERSTAND BETTER
+        console.log(x);
         console.log(getName);
 
         var x = 7;
@@ -518,6 +525,49 @@
         }
 
     # NOW :
-        - In Code 3 and Code 4 We Can see same result because we 
+        - In Code 3 and Code 4 We Can see same result
+        - Because when ever the JS program run execution context is created
+            and there is in the memory component memory is allocate for each every variable and function
+        
+        - So that why In 'CODE 4' When function start to execute value of 'x' was undefined and 
+            for 'getName' function the value is hole function
 
+        - You better understand by putting debugger at very first line of code. 
+    
+    // Code 5 :
+        
+        getName();                                      <--------------- PUT DEBUGGER IN CONSOLE TO UNDERSTAND BETTER
+        console.log(x);
+        console.log(getName);
+        console.log(getName2);
+
+        var x = 7;
+
+        var getName2 = function () {
+            console.log('Function Expression');
+        }
+
+        var getName = () => {
+            console.log('Arrow Function')
+        }
+
+    # Now :
+        - In Code 5 We use function expression and arrow function 
+        - Here we declare function as variable so when we run this code
+            both function and variable got undefined in console.
+
+        - Better understand put debugger and run command in browser.
+    
+*/
+
+    // TDZ [Temporal Dead Zone]:
+
+/* 
+        * 'let' and 'const' Hoisted ?
+        - Technically, yes. But not in practice
+
+        Because of the above answer 'let' and 'const' are in TDZ 
+
+        * What is TDZ ? 
+        - 
 */

@@ -399,7 +399,7 @@ const restaurant = {
 //         // Check How many elements are in the sets
 //         console.log(ordersSet.size);
         
-//         // "has" method check if perticular elements are in the sets or not 
+//         // "has" method check if particular elements are in the sets or not 
 //         console.log(ordersSet.has('Pizza'));
 //         console.log(ordersSet.has('Bread'));
         
@@ -409,7 +409,7 @@ const restaurant = {
 //         ordersSet.delete('Risotto');
 //         console.log(ordersSet);
         
-//         // In Stes we cann't retrieve the elements
+//         // In Sets we can't retrieve the elements
 //         console.log(ordersSet[0]);  /* =>  Output : undefined */
         
 //         // remove all elements using "clear" method
