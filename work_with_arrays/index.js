@@ -165,7 +165,7 @@ const displayMovements = function (movements) {
   })
 }
 
-displayMovements(account1.movements);
+// displayMovements(account1.movements);
 
 
 
@@ -265,12 +265,12 @@ console.log('max', max);
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // The Magic of Chaining Methods
 
-const calcDisplaySummary = function(movements) {
-  const incomes = movements.filter(mov => mov > 0).reduce((acc, mov, i, arr) => acc+mov, 0);
+const calcDisplaySummary = function(acc) {
+  const incomes = acc.movements.filter(mov => mov > 0).reduce((acc, mov, i, arr) => acc+mov, 0);
 
-  const outcomes = movements.filter(mov => mov < 0).reduce((acc, mov, i, arr) => acc+mov, 0);
+  const outcomes = acc.movements.filter(mov => mov < 0).reduce((acc, mov, i, arr) => acc+mov, 0);
 
-  const interest = movements.filter(mov => mov > 0).map((mov) => mov * 0.2).reduce((acc, mov, i, arr) => acc+mov, 0);
+  const interest = movements.filter(mov => mov > 0).map((mov) => mov * acc.interestRate).reduce((acc, mov, i, arr) => acc+mov, 0);
 
   labelSumIn.textContent = `${incomes}€`;
   labelSumOut.textContent = `${Math.abs(outcomes)}€`; 
@@ -278,3 +278,55 @@ const calcDisplaySummary = function(movements) {
 }
 
 calcDisplaySummary(account1.movements);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// The find Method
+
+/* 
+  Find methods is similar to filter methods 
+  But In filter it is returned new array 
+  where In the find method it is just returned specific element
+*/
+
+const firstWithdrawal = movements.find(mov => mov < 0);
+console.log(movements);
+console.log(firstWithdrawal);
+
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Implementing Login
+
+let currentAccount;
+
+btnLogin.addEventListener('click', (e) =>{
+
+  // Prevent form from submitting
+  e.preventDefault()
+
+  currentAccount = accounts.find(acc => acc.username === inputLoginUsername.value);
+  console.log('currentAccount',currentAccount, inputLoginPin.value);
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // Display UI and message
+    labelWelcome.innerHTML = `Welcome back, ${currentAccount.owner.split(' ')[0]}`
+    containerApp.style.opacity = '1';
+
+    // Clear Input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur()
+
+    // Display Movements
+    displayMovements(currentAccount.movements);
+
+    // Display balance
+    calcDisplayBalance(currentAccount.movements);
+
+    // Display Summary
+    calcDisplaySummary(currentAccount);
+  }
+})
+
