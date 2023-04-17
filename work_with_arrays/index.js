@@ -248,12 +248,13 @@ console.log(balance2);
 
 
 
-const calcDisplayBalance =  (movements) => {
-  const balance = movements.reduce((acc, mov) => acc+mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const calcDisplayBalance =  (acc) => {
+  acc.balance = acc.movements.reduce((acc, mov) => acc+mov, 0);
+  console.log();
+  labelBalance.textContent = `${acc.balance} EUR`;
 }
 
-calcDisplayBalance(account1.movements);
+// calcDisplayBalance(account1.movements);
 
 
 /* Maximum Value */
@@ -270,14 +271,15 @@ const calcDisplaySummary = function(acc) {
 
   const outcomes = acc.movements.filter(mov => mov < 0).reduce((acc, mov, i, arr) => acc+mov, 0);
 
-  const interest = movements.filter(mov => mov > 0).map((mov) => mov * acc.interestRate).reduce((acc, mov, i, arr) => acc+mov, 0);
+  const interest = acc.movements.filter(mov => mov > 0).map((mov) => mov * acc.interestRate).reduce((acc, mov, i, arr) => acc+mov, 0);
+
 
   labelSumIn.textContent = `${incomes}€`;
   labelSumOut.textContent = `${Math.abs(outcomes)}€`; 
   labelSumInterest.textContent = `${interest}€`
 }
 
-calcDisplaySummary(account1.movements);
+// calcDisplaySummary(account1.movements);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -319,14 +321,44 @@ btnLogin.addEventListener('click', (e) =>{
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur()
 
-    // Display Movements
-    displayMovements(currentAccount.movements);
-
-    // Display balance
-    calcDisplayBalance(currentAccount.movements);
-
-    // Display Summary
-    calcDisplaySummary(currentAccount);
+    updateUI(currentAccount)
   }
 })
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Implementing Transfers
+
+btnTransfer.addEventListener('click', (event) => {
+  event.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(acc => acc.username === inputTransferTo.value);
+
+  inputTransferAmount.value = inputTransferTo.value = ''
+
+  if (amount > 0 && currentAccount.balance >= amount && receiverAcc && receiverAcc?.username !== currentAccount?.username) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+
+    updateUI(currentAccount)
+  }
+
+});
+
+const updateUI = (acc) => { 
+   // Display Movements
+   displayMovements(acc.movements);
+
+   // Display balance
+   calcDisplayBalance(acc);
+
+   // Display Summary
+   calcDisplaySummary(acc);
+};
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Sorting Arrays
+
+const owners = ['Ravi', 'Maitrak', 'Dikshit', 'Dev', 'Kruten'];
+console.log(owners.sort());
