@@ -165,7 +165,7 @@ const displayMovements = function (movements) {
   })
 }
 
-displayMovements(account1.movements);
+// displayMovements(account1.movements);
 
 
 
@@ -248,12 +248,13 @@ console.log(balance2);
 
 
 
-const calcDisplayBalance =  (movements) => {
-  const balance = movements.reduce((acc, mov) => acc+mov, 0);
-  labelBalance.textContent = `${balance} EUR`;
+const calcDisplayBalance =  (acc) => {
+  acc.balance = acc.movements.reduce((acc, mov) => acc+mov, 0);
+  console.log();
+  labelBalance.textContent = `${acc.balance} EUR`;
 }
 
-calcDisplayBalance(account1.movements);
+// calcDisplayBalance(account1.movements);
 
 
 /* Maximum Value */
@@ -265,16 +266,99 @@ console.log('max', max);
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // The Magic of Chaining Methods
 
-const calcDisplaySummary = function(movements) {
-  const incomes = movements.filter(mov => mov > 0).reduce((acc, mov, i, arr) => acc+mov, 0);
+const calcDisplaySummary = function(acc) {
+  const incomes = acc.movements.filter(mov => mov > 0).reduce((acc, mov, i, arr) => acc+mov, 0);
 
-  const outcomes = movements.filter(mov => mov < 0).reduce((acc, mov, i, arr) => acc+mov, 0);
+  const outcomes = acc.movements.filter(mov => mov < 0).reduce((acc, mov, i, arr) => acc+mov, 0);
 
-  const interest = movements.filter(mov => mov > 0).map((mov) => mov * 0.2).reduce((acc, mov, i, arr) => acc+mov, 0);
+  const interest = acc.movements.filter(mov => mov > 0).map((mov) => mov * acc.interestRate).reduce((acc, mov, i, arr) => acc+mov, 0);
+
 
   labelSumIn.textContent = `${incomes}€`;
   labelSumOut.textContent = `${Math.abs(outcomes)}€`; 
   labelSumInterest.textContent = `${interest}€`
 }
 
-calcDisplaySummary(account1.movements);
+// calcDisplaySummary(account1.movements);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// The find Method
+
+/* 
+  Find methods is similar to filter methods 
+  But In filter it is returned new array 
+  where In the find method it is just returned specific element
+*/
+
+const firstWithdrawal = movements.find(mov => mov < 0);
+console.log(movements);
+console.log(firstWithdrawal);
+
+const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+console.log(account);
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Implementing Login
+
+let currentAccount;
+
+btnLogin.addEventListener('click', (e) =>{
+
+  // Prevent form from submitting
+  e.preventDefault()
+
+  currentAccount = accounts.find(acc => acc.username === inputLoginUsername.value);
+  console.log('currentAccount',currentAccount, inputLoginPin.value);
+
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    // Display UI and message
+    labelWelcome.innerHTML = `Welcome back, ${currentAccount.owner.split(' ')[0]}`
+    containerApp.style.opacity = '1';
+
+    // Clear Input fields
+    inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginPin.blur()
+
+    updateUI(currentAccount)
+  }
+})
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Implementing Transfers
+
+btnTransfer.addEventListener('click', (event) => {
+  event.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(acc => acc.username === inputTransferTo.value);
+
+  inputTransferAmount.value = inputTransferTo.value = ''
+
+  if (amount > 0 && currentAccount.balance >= amount && receiverAcc && receiverAcc?.username !== currentAccount?.username) {
+    currentAccount.movements.push(-amount);
+    receiverAcc.movements.push(amount);
+
+    updateUI(currentAccount)
+  }
+
+});
+
+const updateUI = (acc) => { 
+   // Display Movements
+   displayMovements(acc.movements);
+
+   // Display balance
+   calcDisplayBalance(acc);
+
+   // Display Summary
+   calcDisplaySummary(acc);
+};
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// Sorting Arrays
+
+const owners = ['Ravi', 'Maitrak', 'Dikshit', 'Dev', 'Kruten'];
+console.log(owners.sort());
