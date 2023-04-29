@@ -97,74 +97,119 @@ getCountryData('bharat');
 ///////////////////////////////////////////////////////////////////////////
 //  Welcome to Callback Hell
 
-function renderCountry(data, className = '') {
-    const html = `
-    <article class="country ${className}">
-        <img class="country__img" src="${data.flags.svg}" />
-        <div class="country__data">
-        <h3 class="country__name">${data.name.common}</h3>
-        <h4 class="country__region">${data.region}</h4>
-        <p class="country__row"><span>👫</span>${(data.population / 1000000).toFixed(1)} people</p>
-        <p class="country__row"><span>🗣️</span>${data.languages.hin }</p>
-        </div>
-        </article>`;
-            // <p class="country__row"><span>💰</span>${data.currencies.INR.name}</p>
+// function renderCountry(data, className = '') {
+//     const html = `
+//     <article class="country ${className}">
+//         <img class="country__img" src="${data.flags.svg}" />
+//         <div class="country__data">
+//         <h3 class="country__name">${data.name.common}</h3>
+//         <h4 class="country__region">${data.region}</h4>
+//         <p class="country__row"><span>👫</span>${(data.population / 1000000).toFixed(1)} people</p>
+//         <p class="country__row"><span>🗣️</span>${data.languages.hin }</p>
+//         </div>
+//         </article>`;
+//             // <p class="country__row"><span>💰</span>${data.currencies.INR.name}</p>
             
-            countriesContainer.insertAdjacentHTML('beforeend', html);
-    countriesContainer.style.opacity = 1;
-}
+//             countriesContainer.insertAdjacentHTML('beforeend', html);
+//     countriesContainer.style.opacity = 1;
+// }
 
-const getCountryAndNeighbour = function(country){
+// const getCountryAndNeighbour = function(country){
     
-    // AJAX Call country 1
+//     // AJAX Call country 1
     
-    const request = new XMLHttpRequest();
-    request.open('GET', `https://restcountries.com/v3.1/name/${country}`)
-    request.send();
+//     const request = new XMLHttpRequest();
+//     request.open('GET', `https://restcountries.com/v3.1/name/${country}`)
+//     request.send();
     
-    request.addEventListener('load', function () {
-        const [data1] = JSON.parse(this.responseText);
+//     request.addEventListener('load', function () {
+//         const [data1] = JSON.parse(this.responseText);
         
-        // Render country 1
-        renderCountry(data1);
+//         // Render country 1
+//         renderCountry(data1);
         
-        // Get neighbours country (2)
+//         // Get neighbours country (2)
         
-        const [neighbour] = data1.borders;
+//         const [neighbour] = data1.borders;
         
-        if (!neighbour) return;
+//         if (!neighbour) return;
         
-        // AJAX Call country 2  
+//         // AJAX Call country 2  
             
-        const request2 = new XMLHttpRequest();
-        request2.open('GET', `https://restcountries.com/v3.1/alpha/${neighbour}`)
-        request2.send();
+//         const request2 = new XMLHttpRequest();
+//         request2.open('GET', `https://restcountries.com/v3.1/alpha/${neighbour}`)
+//         request2.send();
         
-        request2.addEventListener('load', function() {
-            const [data2] = JSON.parse(this.responseText);
+//         request2.addEventListener('load', function() {
+//             const [data2] = JSON.parse(this.responseText);
             
-            renderCountry(data2, 'neighbour')
-        })
-    });
-}
+//             renderCountry(data2, 'neighbour')
+//         })
+//     });
+// }
 
-getCountryAndNeighbour('bharat');
+// getCountryAndNeighbour('bharat');
 
 
-setTimeout(() => {
-    console.log('1 second passed');
-    setTimeout(() => {
-        console.log('2 second passed');
-        setTimeout(() => {
-            console.log('3 second passed');
-            setTimeout(() => {
-                console.log('4 second passed');
-            },1000)
-        },1000)
-    },1000)
-},1000)
+// setTimeout(() => {
+//     console.log('1 second passed');
+//     setTimeout(() => {
+//         console.log('2 second passed');
+//         setTimeout(() => {
+//             console.log('3 second passed');
+//             setTimeout(() => {
+//                 console.log('4 second passed');
+//             },1000)
+//         },1000)
+//     },1000)
+// },1000)
 
 
 ///////////////////////////////////////////////////////////////////////////
 // Promises and the Fetch API
 
+const request = fetch(`https://restcountries.com/v3.1/name/bharat`);
+console.log(request)
+
+/*
+    What is Promises ? 
+        - An Object that is used as a placeholder for the future 
+            result of an asynchronous operation.
+                        |
+                        | OR
+                        |
+        - A container for an asynchronously delivered value.
+                        |
+                        | OR
+                        |
+        - A container for a future value.
+        
+    EXAMPLE : LOTTERY TICKET => PROMISE that i receive money 
+                                if i guess correct outcome.
+                                
+            1. I Buy lottery ticket (promise) right now.
+            2. Lottery draw happen asynchronously
+            3. If correct outcome, I receive money, because it was promised
+            
+    => We no longer need to rely on events and callbacks passed into 
+        asynchronous functions to handle asynchronous results.
+        
+    => Instead of nesting callbacks, we can chain promises for a
+        sequence of asynchronous operations: escaping callback hell
+        
+    # PROMISE LIFECYCLE : 
+                                    |===>  FULFILLED
+        PENDING -----> SETTLED -----|
+                                    |===>  REJECTED
+                                    
+        1. Pending : Before the value is available
+        2. Settled : Asynchronous task has finished
+        3. Fulfilled : Success! The value is now available
+        4. Rejected : An error happened
+        
+        => Above all the state we can manage by CONSUMING PROMISE 
+            but for consuming promise we have to BUILD PROMISE.
+            
+            fetch function build promise by them self
+    
+*/
