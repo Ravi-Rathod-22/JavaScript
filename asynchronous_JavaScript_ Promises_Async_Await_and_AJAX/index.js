@@ -95,3 +95,22 @@ getCountryData('bharat');
 
 ///////////////////////////////////////////////////////////////////////////
 // Promises and the Fetch API
+
+const request = fetch(`https://restcountries.com/v3.1/name/portugal`);
+console.log('request',request);
+
+
+
+///////////////////////////////////////////////////////////////////////////
+// Consuming Promises
+
+const getCountryData = function(country){
+    fetch(`https://restcountries.com/v3.1/name/${country}`).then((res) =>{
+        console.log('ressssssssssssssssssssss', res);
+        return res.json();
+    }). then((data) =>{
+        console.log(data)
+    })
+}
+
+getCountryData('bharat')
